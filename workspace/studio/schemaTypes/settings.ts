@@ -71,6 +71,36 @@ export const settings = defineType({
       validation: (Rule) => Rule.required().min(10).max(300),
     }),
     defineField({
+      name: 'fontPrimary',
+      title: 'Font (primary)',
+      type: 'string',
+      description: 'Nome da fonte principal (ex.: Inter, Sora, Lato).',
+      options: {
+        list: [
+          {title: 'Inter', value: 'Inter'},
+          {title: 'Sora', value: 'Sora'},
+          {title: 'Space Grotesk', value: 'Space Grotesk'},
+          {title: 'Playfair Display', value: 'Playfair Display'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'fontSecondary',
+      title: 'Font (secondary)',
+      type: 'string',
+      description: 'Nome da fonte de destaque (ex.: Playfair, DM Serif, Space Grotesk).',
+      options: {
+        list: [
+          {title: 'Inter', value: 'Inter'},
+          {title: 'Sora', value: 'Sora'},
+          {title: 'Space Grotesk', value: 'Space Grotesk'},
+          {title: 'Playfair Display', value: 'Playfair Display'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'backgroundColor',
       title: 'Background color',
       type: 'color',

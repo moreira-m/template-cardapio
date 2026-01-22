@@ -39,6 +39,14 @@ export const structure: StructureResolver = (S) =>
                                         .schemaType('siteSettings')
                                         .documentId('siteSettings')
                                 ),
+                            S.listItem()
+                                .title('Google Analytics')
+                                .schemaType('analyticsSettings')
+                                .child(
+                                    S.document()
+                                        .schemaType('analyticsSettings')
+                                        .documentId('analyticsSettings')
+                                ),
                         ])
                 ),
         ])

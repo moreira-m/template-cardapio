@@ -1,2 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SANITY_PROJECT_ID,NEXT_PUBLIC_SANITY_DATASET,NEXT_PUBLIC_SANITY_API_VERSION"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

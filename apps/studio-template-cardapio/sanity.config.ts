@@ -5,6 +5,7 @@ import { colorInput } from '@sanity/color-input'
 import { presentationTool } from 'sanity/presentation'
 import { schemaTypes } from './schemaTypes'
 import { structure } from './structure'
+import { locations } from './presentation/locations'
 
 export default defineConfig({
   name: 'default',
@@ -18,8 +19,11 @@ export default defineConfig({
     visionTool(),
     colorInput(),
     presentationTool({
+      resolve: {
+        locations,
+      },
       previewUrl: {
-        origin: 'http://localhost:3000',
+        origin: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
         previewMode: {
           enable: '/api/draft',
           disable: '/api/disable-draft',

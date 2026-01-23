@@ -45,7 +45,16 @@ import { draftMode } from "next/headers";
 
 export async function getHomePage() {
   const { isEnabled } = await draftMode();
-  return await client.fetch(
+
+  const token = process.env.SANITY_API_READ_TOKEN;
+
+  if (isEnabled && !token) {
+    throw new Error("Missing SANITY_API_READ_TOKEN");
+  }
+
+  const clientWithToken = isEnabled ? client.withConfig({ token }) : client;
+
+  return await clientWithToken.fetch(
     HOME_PAGE_QUERY,
     {},
     {

@@ -14,6 +14,14 @@ export const structure: StructureResolver = (S) =>
                         .title('Cardápio')
                         .items([
                             S.listItem()
+                                .title('Página Inicial')
+                                .schemaType('homePage')
+                                .child(
+                                    S.document()
+                                        .schemaType('homePage')
+                                        .documentId('homePage')
+                                ),
+                            S.listItem()
                                 .title('Seções do Menu')
                                 .schemaType('menuSection')
                                 .child(

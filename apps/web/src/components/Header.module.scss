@@ -1,4 +1,49 @@
 @use '../styles/variables' as *;
 @use '../styles/breakpoints' as *;
 
-.header {}
+.header {
+    background-color: var(--header-color, #004D40); // Default to Dark Green if variable missing
+    color: $white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    @include desktop {
+        padding: 1.5rem 2rem;
+    }
+
+    &Content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: $desktop-wide;
+        width: 100%;
+        justify-content: center;
+    }
+
+    &Logo {
+        display: block;
+        max-height: 40px;
+        width: auto;
+        object-fit: contain;
+
+        @include desktop {
+            max-height: 50px;
+        }
+    }
+
+    &Title {
+        font-family: $font-primary;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+
+        @include desktop {
+            font-size: 1.5rem;
+        }
+    }
+}

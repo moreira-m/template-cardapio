@@ -1,9 +1,18 @@
-@import '../styles/variables';
-@import '../styles/breakpoints';
+@use '../styles/variables' as *;
+@use '../styles/breakpoints' as *;
 
 .section {
     margin-bottom: 0;
     padding: 2rem 0;
+
+    // Default text colors (assumes light background)
+    --card-text-color: #1c3c35; // Dark Green
+    --price-color: #FF6B35; // Orange
+
+    &[data-theme='dark'] {
+        // Text colors for dark background (Green/Grey)
+        --card-text-color: #F2EFE6; // Beige
+    }
 }
 
 .header {
@@ -22,7 +31,7 @@
     background: #fdfdfd;
     border: 1px solid #ccc;
     padding: 0.5rem 1.5rem;
-    border-radius: 99px;
+    border-radius: 99px; // Pill shape
     display: inline-block;
 
     [data-theme='dark'] & {

@@ -1,5 +1,5 @@
-@import '../styles/variables';
-@import '../styles/breakpoints';
+@use '../styles/variables' as *;
+@use '../styles/breakpoints' as *;
 
 .card {
     background: $white;
@@ -35,13 +35,15 @@
     &Title {
         font-size: 1.125rem;
         font-weight: 700;
-        color: $black;
+        // Color logic handled by CSS variables injected by parent
+        color: var(--card-text-color, #1c3c35);
         margin: 0;
     }
 
     &Description {
         font-size: 0.875rem;
-        color: #666;
+        color: var(--card-text-color, #666);
+        opacity: 0.8;
         line-height: 1.4;
         margin: 0;
         display: -webkit-box;
@@ -61,7 +63,11 @@
     &Price {
         font-size: 1.25rem;
         font-weight: 800;
-        color: $black; // Will be themed later based on section color
+        color: var(--price-color, #FF6B35); // Orange
+
+        small {
+            color: var(--card-text-color, #1c3c35); // Currency symbol matches textual content
+        }
     }
 
     &Actions {
@@ -78,7 +84,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        background: #eee; // Placeholder color
+        background: #eee;
         transition: filter 0.2s;
 
         &:hover {

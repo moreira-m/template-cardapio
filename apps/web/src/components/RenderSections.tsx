@@ -5,14 +5,18 @@ const sectionComponents: Record<string, React.ComponentType<any>> = {
     menuSection: MenuSection,
 };
 
-export default function RenderSections({ sections }: { sections: any[] }) {
+export default function RenderSections({ sections, carouselColors = [], buttonColors }: {
+    sections: any[],
+    carouselColors?: string[],
+    buttonColors?: { primary: string; secondary: string }
+}) {
     if (!sections || !Array.isArray(sections)) {
         return null;
     }
 
     return (
         <>
-            {sections.map((section) => {
+            {sections.map((section, index) => {
                 const Component = sectionComponents[section._type];
                 if (!Component) {
                     return (
@@ -21,7 +25,19 @@ export default function RenderSections({ sections }: { sections: any[] }) {
                         </div>
                     );
                 }
-                return <Component key={section._key} {...section} />;
+
+                const bgIndex = index % (carouselColors.length || 1);
+                const backgroundColor = carouselColors[bgIndex];
+
+                const theme = bgIndex === 0 ? 'light' : 'dark';
+
+                return <Component
+                    key={section._key}
+                    {...section}
+                    backgroundColor={backgroundColor}
+                    theme={theme}
+                    buttonColors={buttonColors}
+                />;
             })}
         </>
     );

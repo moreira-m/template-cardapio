@@ -55,6 +55,14 @@ export const structure: StructureResolver = (S) =>
                                         .schemaType('analyticsSettings')
                                         .documentId('analyticsSettings')
                                 ),
+                            S.listItem()
+                                .title('Redes Sociais')
+                                .schemaType('socialSettings')
+                                .child(
+                                    S.document()
+                                        .schemaType('socialSettings')
+                                        .documentId('socialSettings')
+                                ),
                         ])
                 ),
         ])

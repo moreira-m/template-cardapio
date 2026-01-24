@@ -1,23 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import { urlFor } from "@/sanity/client";
-import Image from "next/image";
-
-interface MenuItem {
-    name: string;
-    description: string;
-    price: number;
-    image?: any;
-    _key: string;
-}
+import DishCard, { DishProps } from "./DishCard";
+import styles from "./MenuSection.module.scss";
 
 interface MenuSectionProps {
     sectionName: string;
     enableFilter?: boolean;
-    items?: MenuItem[];
-    itemsOmnivore?: MenuItem[];
-    itemsVegetarian?: MenuItem[];
-    itemsVegan?: MenuItem[];
+    items?: DishProps[];
+    itemsOmnivore?: DishProps[];
+    itemsVegetarian?: DishProps[];
+    itemsVegan?: DishProps[];
+    backgroundColor?: string;
+    theme?: 'light' | 'dark';
+    buttonColors?: { primary: string; secondary: string };
 }
 
 type TabType = 'omnivore' | 'vegetarian' | 'vegan';
@@ -28,7 +23,10 @@ export default function MenuSection({
     items,
     itemsOmnivore,
     itemsVegetarian,
-    itemsVegan
+    itemsVegan,
+    backgroundColor,
+    theme = 'light',
+    buttonColors
 }: MenuSectionProps) {
     const safeItems = items || [];
     const safeOmnivore = itemsOmnivore || [];
@@ -55,58 +53,56 @@ export default function MenuSection({
     const displayedItems = getActiveItems();
 
     return (
-        <section style={{ marginBottom: '40px' }}>
-            <h2>{sectionName}</h2>
-
-            {enableFilter && (
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-                    {hasOmnivore && (
-                        <button
-                            onClick={() => setActiveTab('omnivore')}
-                            style={{ fontWeight: activeTab === 'omnivore' ? 'bold' : 'normal' }}
-                        >
-                            Tradicional 🥩
-                        </button>
-                    )}
-                    {hasVegetarian && (
-                        <button
-                            onClick={() => setActiveTab('vegetarian')}
-                            style={{ fontWeight: activeTab === 'vegetarian' ? 'bold' : 'normal' }}
-                        >
-                            Vegetariano 🧀
-                        </button>
-                    )}
-                    {hasVegan && (
-                        <button
-                            onClick={() => setActiveTab('vegan')}
-                            style={{ fontWeight: activeTab === 'vegan' ? 'bold' : 'normal' }}
-                        >
-                            Vegano 🥦
-                        </button>
-                    )}
+        <section className={styles.section} style={{ backgroundColor }} data-theme={theme}>
+            <div className={styles.header}>
+                <div className={styles.titleContainer}>
+                    <h2 className={styles.title}>{sectionName}</h2>
                 </div>
-            )}
 
-            <div>
-                {displayedItems.length === 0 && <p>Nenhum item disponível.</p>}
-                {displayedItems.map((item) => (
-                    <div key={item._key} style={{ border: "1px solid #ccc", padding: "10px", margin: "10px 0", display: "flex", gap: "10px" }}>
-                        {item.image && (
-                            <div style={{ position: 'relative', width: '80px', height: '80px', flexShrink: 0 }}>
-                                <Image
-                                    src={urlFor(item.image).width(160).url()}
-                                    alt={item.name}
-                                    fill
-                                    style={{ objectFit: "cover", borderRadius: "8px" }}
-                                />
-                            </div>
+                {enableFilter && (
+                    <div className={styles.filters}>
+                        {hasOmnivore && (
+                            <button
+                                onClick={() => setActiveTab('omnivore')}
+                                className={`${styles.filterBtn} ${activeTab === 'omnivore' ? styles.active : ''}`}
+                                aria-label="Tradicional"
+                            >
+                                🥩
+                            </button>
                         )}
-                        <div>
-                            <h3 style={{ margin: "0 0 5px 0" }}>{item.name}</h3>
-                            <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>{item.description}</p>
-                            <strong style={{ display: "block", marginTop: "5px" }}>R$ {item.price?.toFixed(2)}</strong>
-                        </div>
+                        {hasVegetarian && (
+                            <button
+                                onClick={() => setActiveTab('vegetarian')}
+                                className={`${styles.filterBtn} ${activeTab === 'vegetarian' ? styles.active : ''}`}
+                                aria-label="Vegetariano"
+                            >
+                                🧀
+                            </button>
+                        )}
+                        {hasVegan && (
+                            <button
+                                onClick={() => setActiveTab('vegan')}
+                                className={`${styles.filterBtn} ${activeTab === 'vegan' ? styles.active : ''}`}
+                                aria-label="Vegano"
+                            >
+                                🥦
+                            </button>
+                        )}
                     </div>
+                )}
+            </div>
+
+            <div className={styles.carousel}>
+                {displayedItems.length === 0 && <p style={{ paddingLeft: '1.5rem' }}>Nenhum item disponível.</p>}
+                {displayedItems.map((item) => (
+                    <DishCard
+                        key={item._key}
+                        name={item.name}
+                        description={item.description}
+                        price={item.price}
+                        image={item.image}
+                        buttonColors={buttonColors}
+                    />
                 ))}
             </div>
         </section>

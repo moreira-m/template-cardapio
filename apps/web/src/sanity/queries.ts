@@ -60,7 +60,8 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
         url,
         "icon": icon.asset->url
       }
-    }
+    },
+    "categories": *[_type == "homePage"][0].sections[]->sectionName
   }
 `);
 
@@ -117,6 +118,7 @@ export async function getSiteSettings() {
 
   return {
     ...data.settings,
-    socialNetworks: data.social?.socialNetworks || []
+    socialNetworks: data.social?.socialNetworks || [],
+    categories: data.categories || []
   };
 }

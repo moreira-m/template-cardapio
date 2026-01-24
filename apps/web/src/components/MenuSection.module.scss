@@ -4,14 +4,15 @@
 .section {
     margin-bottom: 0;
     padding: 2rem 0;
+    background-color: var(--header-color);
 
-    // Default text colors (assumes light background)
-    --card-text-color: #1c3c35; // Dark Green
-    --price-color: #FF6B35; // Orange
-
-    &[data-theme='dark'] {
-        // Text colors for dark background (Green/Grey)
-        --card-text-color: #F2EFE6; // Beige
+    &:not(:first-child) {
+        .header {
+            margin-top: -3.6rem;
+            position: relative;
+            z-index: 2;
+            background-color: var(--header-color);
+        }
     }
 }
 
@@ -21,6 +22,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: $tablet;
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 99px;
+    height: 55px;
 
     @include desktop {
         padding: 0 2rem;
@@ -28,10 +34,7 @@
 }
 
 .titleContainer {
-    background: #fdfdfd;
-    border: 1px solid #ccc;
     padding: 0.5rem 1.5rem;
-    border-radius: 99px; // Pill shape
     display: inline-block;
 
     [data-theme='dark'] & {
@@ -44,19 +47,14 @@
     font-family: $font-primary;
     font-size: 1.2rem;
     font-weight: 700;
-    color: #1c3c35;
+    /* color: handled inline via prop */
     margin: 0;
-
-    [data-theme='dark'] & {
-        color: $white;
-    }
 }
 
 .filters {
     display: flex;
     gap: 0.5rem;
     background: #fdfdfd;
-    border: 1px solid #ccc;
     padding: 0.25rem 0.5rem;
     border-radius: 99px;
 
@@ -108,6 +106,8 @@
     padding: 1rem 1.5rem;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    max-width: $tablet;
+    margin: auto;
 
     &::-webkit-scrollbar {
         display: none;

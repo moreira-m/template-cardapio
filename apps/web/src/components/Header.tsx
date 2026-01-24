@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 interface HeaderProps {
     siteSettings: {
+        categories: any;
         siteName?: string;
         logo?: string;
         headerColor?: { hex: string };
@@ -10,7 +11,7 @@ interface HeaderProps {
 }
 
 export default function Header({ siteSettings }: HeaderProps) {
-    const { siteName, logo, headerColor } = siteSettings || {};
+    const { siteName, logo, headerColor, categories } = siteSettings || {};
 
     const customStyle = headerColor ? { '--header-color': headerColor.hex } as React.CSSProperties : {};
 
@@ -27,6 +28,13 @@ export default function Header({ siteSettings }: HeaderProps) {
                     />
                 )}
                 {siteName && <h1 className={styles.headerTitle}>{siteName}</h1>}
+            </div>
+            <div className={styles.headerCategories}>
+                {siteSettings?.categories?.map((category: string) => (
+                    <span key={category} className={styles.headerCategoryItem}>
+                        {category}
+                    </span>
+                ))}
             </div>
         </header>
     );

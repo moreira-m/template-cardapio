@@ -13,8 +13,8 @@ export default async function Home() {
   ].filter(Boolean) as string[];
 
   const buttonColors = {
-    primary: settings?.buttonPrimaryColor?.hex || '#FF6B35',
-    secondary: settings?.buttonSecondaryColor?.hex || '#004D40',
+    primary: settings?.buttonPrimaryColor?.hex,
+    secondary: settings?.buttonSecondaryColor?.hex,
   };
 
   return (

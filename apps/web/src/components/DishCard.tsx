@@ -35,21 +35,25 @@ export default function DishCard({ name, description, price, image, buttonColors
                     </span>
 
                     <div className={styles.cardActions}>
-                        {/* Search/Details Icon */}
                         <button
                             className={styles.cardButton}
                             aria-label="Ver detalhes"
-                            style={{ background: buttonColors?.secondary || '#004D40', color: 'white' }}
+                            style={{ background: buttonColors?.secondary || '', color: 'white' }}
                         >
-                            🔍
+                            <svg width="18" height="18" viewBox="0 0 62 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="29" cy="29" r="25.5" stroke="#F2EADF" stroke-width="7" />
+                                <path d="M46 48.5L58.5 61" stroke="#F2EADF" stroke-width="7" stroke-linecap="round" />
+                            </svg>
                         </button>
-                        {/* Add Icon */}
                         <button
                             className={styles.cardButton}
                             aria-label="Adicionar"
-                            style={{ background: buttonColors?.primary || '#ff7e41', color: 'white' }}
+                            style={{ background: buttonColors?.primary || '', color: 'white' }}
                         >
-                            +
+                            <svg width="18" height="18" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M26.5 3.5V48.5" stroke="#F2EADF" stroke-width="7" stroke-linecap="round" />
+                                <path d="M48.5 25.5L3.5 25.5" stroke="#F2EADF" stroke-width="7" stroke-linecap="round" />
+                            </svg>
                         </button>
                     </div>
                 </div>

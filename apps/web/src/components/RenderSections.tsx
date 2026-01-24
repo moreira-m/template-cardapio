@@ -28,8 +28,13 @@ export default function RenderSections({ sections, carouselColors = [], buttonCo
 
                 const bgIndex = index % (carouselColors.length || 1);
                 const backgroundColor = carouselColors[bgIndex];
-
                 const theme = bgIndex === 0 ? 'light' : 'dark';
+
+                const greenColor = carouselColors[1] || '';
+                const beigeColor = carouselColors[0] || '';
+
+                const textColor = theme === 'light' ? greenColor : beigeColor;
+                const priceColor = buttonColors?.primary || '';
 
                 return <Component
                     key={section._key}
@@ -37,6 +42,8 @@ export default function RenderSections({ sections, carouselColors = [], buttonCo
                     backgroundColor={backgroundColor}
                     theme={theme}
                     buttonColors={buttonColors}
+                    textColor={textColor}
+                    priceColor={priceColor}
                 />;
             })}
         </>

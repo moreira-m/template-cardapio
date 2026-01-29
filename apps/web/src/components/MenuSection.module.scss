@@ -23,10 +23,14 @@
     align-items: center;
     justify-content: space-between;
     max-width: $tablet;
-    margin: auto;
-    border: 1px solid #ccc;
+    margin: 0 1rem;
+    border: 1px solid var(--card-text-color);
     border-radius: 99px;
     height: 55px;
+
+    @include tablet {
+        margin: auto;
+    }
 
     @include desktop {
         padding: 0 2rem;
@@ -47,20 +51,19 @@
     font-family: $font-primary;
     font-size: 1.2rem;
     font-weight: 700;
-    /* color: handled inline via prop */
     margin: 0;
 }
 
 .filters {
     display: flex;
     gap: 0.5rem;
-    background: #fdfdfd;
+    background: var(--header-color);
     padding: 0.25rem 0.5rem;
     border-radius: 99px;
 
     [data-theme='dark'] & {
         background: transparent;
-        border-color: rgba($white, 0.5);
+        border-color: var(--header-color);
     }
 }
 
@@ -79,7 +82,7 @@
     opacity: 0.5;
 
     [data-theme='dark'] & {
-        filter: grayscale(1) brightness(2);
+        // filter: grayscale(1) brightness(2);
     }
 
     &:hover {
@@ -88,13 +91,35 @@
     }
 
     &.active {
-        background: #1c3c35;
-        color: white;
+        background: var(--card-text-color);
         opacity: 1;
+        width: 50px;
+        border-radius: 20px;
 
         [data-theme='dark'] & {
-            background: $white;
-            color: $black;
+            color: var(--card-text-color);
+        }
+
+        .filterBtnIcon {
+            stroke: var(--header-color);
+
+            &.filled {
+                fill: var(--header-color);
+            }
+        }
+    }
+
+    .filterBtnIcon {
+        stroke: var(--card-text-color);
+        fill: none;
+        stroke-width: 3;
+        stroke-miterlimit: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: stroke 0.3s ease, fill 0.3s ease;
+
+        &.filled {
+            fill: var(--card-text-color);
         }
     }
 }

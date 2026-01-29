@@ -2,12 +2,13 @@
 @use '../styles/breakpoints' as *;
 
 .card {
-    border: 1px solid #e0e0e0;
+    border: 1px solid;
+    border-color: var(--card-text-color);
     border-radius: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-width: 280px;
+    min-width: 260px;
     max-width: 280px;
     scroll-snap-align: center;
     position: relative;
@@ -21,6 +22,8 @@
 
     &Image {
         object-fit: cover;
+        padding: 1rem;
+        border-radius: 25px;
     }
 
     &Content {
@@ -82,8 +85,17 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        background: #eee;
         transition: filter 0.2s;
+        border-radius: 20px;
+
+        &:nth-child(1) {
+            background: var(--header-color);
+            border: 1px solid var(--card-text-color);
+        }
+
+        &:nth-child(2) {
+            background: var(--price-color);
+        }
 
         &:hover {
             filter: brightness(0.9);
@@ -93,5 +105,9 @@
             width: 18px;
             height: 18px;
         }
+    }
+
+    &ButtonIcon {
+        stroke: var(--card-text-color);
     }
 }

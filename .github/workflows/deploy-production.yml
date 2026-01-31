@@ -59,7 +59,7 @@ jobs:
       - name: Deploy to Netlify Production
         uses: nwtgck/actions-netlify@v3.0
         with:
-          publish-dir: './apps/web/.next'
+          publish-dir: 'apps/web/.next'
           production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Production Deploy - Commit ${{ github.sha }}"

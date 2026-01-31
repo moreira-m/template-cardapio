@@ -56,15 +56,11 @@ jobs:
           NEXT_PUBLIC_SANITY_DATASET: production
           NEXT_PUBLIC_SITE_URL: https://template-cardapio.netlify.app
       
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+      
       - name: Deploy to Netlify Production
-        uses: nwtgck/actions-netlify@v3.0
-        with:
-          publish-dir: 'apps/web/.next'
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Production Deploy - Commit ${{ github.sha }}"
-          enable-pull-request-comment: false
-          enable-commit-comment: false
+        run: netlify deploy --prod --dir=apps/web/.next --message="Production Deploy - Commit ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}

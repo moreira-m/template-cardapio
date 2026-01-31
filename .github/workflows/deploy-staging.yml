@@ -37,15 +37,11 @@ jobs:
           NEXT_PUBLIC_SANITY_DATASET: staging
           NEXT_PUBLIC_SITE_URL: https://template-cardapio-staging.netlify.app
       
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+      
       - name: Deploy to Netlify Staging
-        uses: nwtgck/actions-netlify@v3.0
-        with:
-          publish-dir: 'apps/web/.next'
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions - Commit ${{ github.sha }}"
-          enable-pull-request-comment: false
-          enable-commit-comment: false
+        run: netlify deploy --prod --dir=apps/web/.next --message="Deploy from GitHub Actions - Commit ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}

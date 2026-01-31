@@ -60,7 +60,7 @@ jobs:
         run: npm install -g netlify-cli
       
       - name: Deploy to Netlify Production
-        run: netlify deploy --prod --dir=apps/web/.next --message="Production Deploy - Commit ${{ github.sha }}"
+        run: netlify deploy --prod --dir=.next --message="Production Deploy - Commit ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}

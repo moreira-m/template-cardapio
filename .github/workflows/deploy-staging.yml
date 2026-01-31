@@ -1,0 +1,67 @@
+name: Deploy to Staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Netlify Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    defaults:
+      run:
+        working-directory: apps/web
+    
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0  # Need full history for tagging
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/web/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Next.js application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: lgrooj8c
+          NEXT_PUBLIC_SANITY_DATASET: staging
+          NEXT_PUBLIC_SITE_URL: https://template-cardapio-staging.netlify.app
+      
+      - name: Deploy to Netlify Staging
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './apps/web/.next'
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions - Commit ${{ github.sha }}"
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
+      
+      - name: Tag deployed commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f deployed-to-staging
+          git push -f origin deployed-to-staging
+      
+      - name: Output deployment info
+        run: |
+          echo "✅ Deployed to staging successfully!"
+          echo "📦 Commit: ${{ github.sha }}"
+          echo "🔖 Tagged as: deployed-to-staging"
+          echo "🌐 URL: https://template-cardapio-staging.netlify.app"
+          echo ""
+          echo "Next step: Test on staging, then run 'Deploy to Production' workflow"

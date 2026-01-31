@@ -1,0 +1,84 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Netlify Production
+    runs-on: ubuntu-latest
+    environment: production  # This triggers approval gate
+    
+    defaults:
+      run:
+        working-directory: apps/web
+    
+    steps:
+      - name: Checkout from staging tag
+        uses: actions/checkout@v4
+        with:
+          ref: deployed-to-staging  # Deploy SAME commit as staging
+          fetch-depth: 0
+      
+      - name: Verify staging deployment exists
+        run: |
+          if ! git rev-parse deployed-to-staging >/dev/null 2>&1; then
+            echo "❌ Error: No staging deployment found!"
+            echo "You must deploy to staging first before deploying to production."
+            exit 1
+          fi
+          echo "✅ Staging tag found, proceeding with deployment..."
+      
+      - name: Show deployment info
+        run: |
+          STAGING_SHA=$(git rev-parse deployed-to-staging)
+          echo "📦 Deploying commit: $STAGING_SHA"
+          echo "📝 Commit message: $(git log -1 --pretty=%B deployed-to-staging)"
+          echo "👤 Author: $(git log -1 --pretty=%an deployed-to-staging)"
+          echo "📅 Date: $(git log -1 --pretty=%ad deployed-to-staging)"
+          echo ""
+          echo "⚠️  This is the SAME commit that was tested on staging"
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/web/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Next.js application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: lgrooj8c
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SITE_URL: https://template-cardapio.netlify.app
+      
+      - name: Deploy to Netlify Production
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './apps/web/.next'
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Production Deploy - Commit ${{ github.sha }}"
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}
+      
+      - name: Tag production deployment
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f deployed-to-production
+          git push -f origin deployed-to-production
+      
+      - name: Output deployment info
+        run: |
+          echo "🎉 Deployed to production successfully!"
+          echo "📦 Commit: $(git rev-parse deployed-to-staging)"
+          echo "🔖 Tagged as: deployed-to-production"
+          echo "🌐 URL: https://template-cardapio.netlify.app"

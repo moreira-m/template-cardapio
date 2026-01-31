@@ -3,6 +3,9 @@ name: Deploy to Staging
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write  # Required to push git tags
+
 jobs:
   deploy:
     name: Deploy to Netlify Staging

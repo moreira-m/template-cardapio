@@ -3,11 +3,14 @@ name: Deploy to Production
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     name: Deploy to Netlify Production
     runs-on: ubuntu-latest
-    environment: production  # This triggers approval gate
+    environment: production
     
     defaults:
       run:
@@ -17,7 +20,7 @@ jobs:
       - name: Checkout from staging tag
         uses: actions/checkout@v4
         with:
-          ref: deployed-to-staging  # Deploy SAME commit as staging
+          ref: deployed-to-staging 
           fetch-depth: 0
       
       - name: Verify staging deployment exists

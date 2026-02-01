@@ -7,32 +7,69 @@ import { schemaTypes } from './schemaTypes'
 import { structure } from './structure'
 import { locations } from './presentation/locations'
 
-export default defineConfig({
-  name: 'default',
-  title: 'template-cardapio',
+export default defineConfig([
+  // Production Workspace
+  {
+    name: 'production',
+    title: 'Production',
+    basePath: '/production',
 
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID || '',
-  dataset: process.env.SANITY_STUDIO_DATASET || '',
+    projectId: process.env.SANITY_STUDIO_PROJECT_ID || '',
+    dataset: 'production',
 
-  plugins: [
-    structureTool({ structure }),
-    visionTool(),
-    colorInput(),
-    presentationTool({
-      resolve: {
-        locations,
-      },
-      previewUrl: {
-        origin: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000',
-        previewMode: {
-          enable: '/api/draft',
-          disable: '/api/disable-draft',
+    plugins: [
+      structureTool({ structure }),
+      visionTool(),
+      colorInput(),
+      presentationTool({
+        resolve: {
+          locations,
         },
-      },
-    }),
-  ],
+        previewUrl: {
+          origin: 'https://template-cardapio.netlify.app',
+          previewMode: {
+            enable: '/api/draft',
+            disable: '/api/disable-draft',
+          },
+        },
+      }),
+    ],
 
-  schema: {
-    types: schemaTypes,
+    schema: {
+      types: schemaTypes,
+    },
   },
-})
+
+  // Staging Workspace
+  {
+    name: 'staging',
+    title: 'Staging',
+    basePath: '/staging',
+
+    projectId: process.env.SANITY_STUDIO_PROJECT_ID || '',
+    dataset: 'staging',
+
+    plugins: [
+      structureTool({ structure }),
+      visionTool(),
+      colorInput(),
+      presentationTool({
+        resolve: {
+          locations,
+        },
+        previewUrl: {
+          origin: 'https://template-cardapio-staging.netlify.app',
+          previewMode: {
+            enable: '/api/draft',
+            disable: '/api/disable-draft',
+          },
+        },
+      }),
+    ],
+
+    schema: {
+      types: schemaTypes,
+    },
+  },
+])
+
